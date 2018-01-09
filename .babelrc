@@ -1,0 +1,22 @@
+{
+  "env": {
+    "test": {
+      "presets": [
+        "env"
+      ]
+    },
+    "development": {
+      "presets": [
+        [
+          "env",
+          {
+            "modules": false
+          }
+        ]
+      ],
+      "plugins": [
+        "external-helpers"
+      ]
+    }
+  }
+}
