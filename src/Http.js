@@ -1,4 +1,5 @@
-import queryStringify from './query-stringify'
+import 'es6-object-assign/auto'
+import querystring from 'querystring'
 
 function requestError (statusCode, body, request) {
   const message = `${request.method} ${request.url} returned ${statusCode}: ${body}`
@@ -24,12 +25,26 @@ export default class Http {
     this.del = this.request.bind(this, 'delete')
   }
 
+  get credentials () {
+    return {
+      key: this.key,
+      token: this.token
+    }
+  }
+
   request (method, pathname, paramsOrCallback = {}, callback = () => undefined) {
-    let params = {}
+    let params = this.credentials
     if (typeof paramsOrCallback === 'function') {
       callback = paramsOrCallback
     } else {
-      params = paramsOrCallback
+      params = Object.assign(params, paramsOrCallback)
+    }
+
+    // extract search params in pathname into params
+    if (typeof pathname === 'string' && pathname.indexOf('?') !== -1) {
+      let search
+      [pathname, search] = pathname.split('?')
+      params = Object.assign(params, querystring.parse(search))
     }
     this._request(method, pathname, params, callback)
   }
@@ -43,9 +58,9 @@ export default class Http {
     }
 
     if (method === 'get' || method === 'delete') {
-      url += '?' + queryStringify(this.addCredentials(params))
+      url += '?' + querystring.stringify(params)
     } else {
-      options.payload = JSON.stringify(this.addCredentials(params))
+      options.payload = JSON.stringify(params)
     }
 
     const res = UrlFetchApp.fetch(url, options)
@@ -58,13 +73,5 @@ export default class Http {
     } else {
       callback(null, JSON.parse(body))
     }
-  }
-
-  addCredentials (params) {
-    params.key = this.key
-    if (this.token) {
-      params.token = this.token
-    }
-    return params
   }
 }

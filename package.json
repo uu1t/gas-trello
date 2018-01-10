@@ -3,7 +3,10 @@
   "description": "Google Apps Script wrapper for Trello's HTTP API",
   "version": "0.0.1",
   "author": "Yuichi Tanikawa <kojole.jp@gmail.com>",
-  "dependencies": {},
+  "dependencies": {
+    "es6-object-assign": "^1.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2"
+  },
   "devDependencies": {
     "@types/google-apps-script": "0.0.18",
     "@types/jest": "^22.0.1",
@@ -13,7 +16,9 @@
     "jest": "^22.0.4",
     "rollup": "^0.53.3",
     "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-gas": "^1.0.0",
+    "rollup-plugin-node-resolve": "^3.0.0",
     "standard": "^10.0.3"
   },
   "keywords": [],

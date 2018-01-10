@@ -1,5 +1,8 @@
 import babel from 'rollup-plugin-babel'
+import builtins from 'rollup-plugin-node-builtins'
+import commonjs from 'rollup-plugin-commonjs'
 import gas from 'rollup-plugin-gas'
+import resolve from 'rollup-plugin-node-resolve'
 
 export default {
   input: 'src/index.js',
@@ -9,6 +12,9 @@ export default {
   },
   plugins: [
     babel(),
-    gas()
+    builtins(),
+    commonjs(),
+    gas(),
+    resolve()
   ]
 }
