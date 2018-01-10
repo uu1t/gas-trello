@@ -1,5 +1,14 @@
 import queryStringify from './query-stringify'
 
+function requestError (statusCode, body, request) {
+  const message = `${request.method} ${request.url} returned ${statusCode}: ${body}`
+  const err = new Error(message)
+  err.statusCode = statusCode
+  err.body = body
+  err.request = request
+  return err
+}
+
 export default class Http {
   constructor (key, token) {
     if (!key) {
@@ -10,43 +19,63 @@ export default class Http {
     this.origin = 'https://api.trello.com'
   }
 
-  get (pathname, args) {
-    return this.request('get', pathname, args)
+  get (pathname, paramsOrCallback, callback) {
+    this.request('get', pathname, paramsOrCallback, callback)
   }
 
-  post (pathname, args) {
-    return this.request('post', pathname, args)
+  post (pathname, paramsOrCallback, callback) {
+    this.request('post', pathname, paramsOrCallback, callback)
   }
 
-  put (pathname, args) {
-    return this.request('put', pathname, args)
+  put (pathname, paramsOrCallback, callback) {
+    this.request('put', pathname, paramsOrCallback, callback)
   }
 
-  del (pathname, args) {
-    return this.request('delete', pathname, args)
+  del (pathname, paramsOrCallback, callback) {
+    this.request('delete', pathname, paramsOrCallback, callback)
   }
 
-  request (method, pathname, args = {}) {
+  request (method, pathname, paramsOrCallback = {}, callback = () => undefined) {
+    let params = {}
+    if (typeof paramsOrCallback === 'function') {
+      callback = paramsOrCallback
+    } else {
+      params = paramsOrCallback
+    }
+    this._request(method, pathname, params, callback)
+  }
+
+  _request (method, pathname, params, callback) {
     let url = this.origin + pathname
-    const params = {
-      method
+    const options = {
+      method,
+      contentType: 'application/json',
+      muteHttpExceptions: true
     }
 
     if (method === 'get' || method === 'delete') {
-      url += '?' + queryStringify(this.addCredentials(args))
+      url += '?' + queryStringify(this.addCredentials(params))
     } else {
-      params.contentType = 'application/json'
-      params.payload = JSON.stringify(this.addCredentials(args))
+      options.payload = JSON.stringify(this.addCredentials(params))
     }
 
-    return UrlFetchApp.fetch(url, params)
+    const res = UrlFetchApp.fetch(url, options)
+    const statusCode = res.getResponseCode()
+    const body = res.getContentText()
+
+    if (statusCode >= 400) {
+      const err = requestError(statusCode, body, { url, method: method.toUpperCase() })
+      callback(err)
+    } else {
+      callback(null, JSON.parse(body))
+    }
   }
 
-  addCredentials (args) {
-    args.key = this.key
+  addCredentials (params) {
+    params.key = this.key
     if (this.token) {
-      args.token = this.token
+      params.token = this.token
     }
-    return args
+    return params
   }
 }

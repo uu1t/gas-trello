@@ -50,6 +50,15 @@ var createClass = function () {
   };
 }();
 
+function requestError(statusCode, body, request) {
+  var message = request.method + ' ' + request.url + ' returned ' + statusCode + ': ' + body;
+  var err = new Error(message);
+  err.statusCode = statusCode;
+  err.body = body;
+  err.request = request;
+  return err;
+}
+
 var Http = function () {
   function Http(key, token) {
     classCallCheck(this, Http);
@@ -64,51 +73,75 @@ var Http = function () {
 
   createClass(Http, [{
     key: 'get',
-    value: function get$$1(pathname, args) {
-      return this.request('get', pathname, args);
+    value: function get$$1(pathname, paramsOrCallback, callback) {
+      this.request('get', pathname, paramsOrCallback, callback);
     }
   }, {
     key: 'post',
-    value: function post(pathname, args) {
-      return this.request('post', pathname, args);
+    value: function post(pathname, paramsOrCallback, callback) {
+      this.request('post', pathname, paramsOrCallback, callback);
     }
   }, {
     key: 'put',
-    value: function put(pathname, args) {
-      return this.request('put', pathname, args);
+    value: function put(pathname, paramsOrCallback, callback) {
+      this.request('put', pathname, paramsOrCallback, callback);
     }
   }, {
     key: 'del',
-    value: function del(pathname, args) {
-      return this.request('delete', pathname, args);
+    value: function del(pathname, paramsOrCallback, callback) {
+      this.request('delete', pathname, paramsOrCallback, callback);
     }
   }, {
     key: 'request',
     value: function request(method, pathname) {
-      var args = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var paramsOrCallback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+      var callback = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : function () {
+        return undefined;
+      };
 
+      var params = {};
+      if (typeof paramsOrCallback === 'function') {
+        callback = paramsOrCallback;
+      } else {
+        params = paramsOrCallback;
+      }
+      this._request(method, pathname, params, callback);
+    }
+  }, {
+    key: '_request',
+    value: function _request(method, pathname, params, callback) {
       var url = this.origin + pathname;
-      var params = {
-        method: method
+      var options = {
+        method: method,
+        contentType: 'application/json',
+        muteHttpExceptions: true
       };
 
       if (method === 'get' || method === 'delete') {
-        url += '?' + queryStringify(this.addCredentials(args));
+        url += '?' + queryStringify(this.addCredentials(params));
       } else {
-        params.contentType = 'application/json';
-        params.payload = JSON.stringify(this.addCredentials(args));
+        options.payload = JSON.stringify(this.addCredentials(params));
       }
 
-      return UrlFetchApp.fetch(url, params);
+      var res = UrlFetchApp.fetch(url, options);
+      var statusCode = res.getResponseCode();
+      var body = res.getContentText();
+
+      if (statusCode >= 400) {
+        var err = requestError(statusCode, body, { url: url, method: method.toUpperCase() });
+        callback(err);
+      } else {
+        callback(null, JSON.parse(body));
+      }
     }
   }, {
     key: 'addCredentials',
-    value: function addCredentials(args) {
-      args.key = this.key;
+    value: function addCredentials(params) {
+      params.key = this.key;
       if (this.token) {
-        args.token = this.token;
+        params.token = this.token;
       }
-      return args;
+      return params;
     }
   }]);
   return Http;
