@@ -69,29 +69,14 @@ var Http = function () {
     this.key = key;
     this.token = token;
     this.origin = 'https://api.trello.com';
+
+    this.get = this.request.bind(this, 'get');
+    this.post = this.request.bind(this, 'post');
+    this.put = this.request.bind(this, 'put');
+    this.del = this.request.bind(this, 'delete');
   }
 
   createClass(Http, [{
-    key: 'get',
-    value: function get$$1(pathname, paramsOrCallback, callback) {
-      this.request('get', pathname, paramsOrCallback, callback);
-    }
-  }, {
-    key: 'post',
-    value: function post(pathname, paramsOrCallback, callback) {
-      this.request('post', pathname, paramsOrCallback, callback);
-    }
-  }, {
-    key: 'put',
-    value: function put(pathname, paramsOrCallback, callback) {
-      this.request('put', pathname, paramsOrCallback, callback);
-    }
-  }, {
-    key: 'del',
-    value: function del(pathname, paramsOrCallback, callback) {
-      this.request('delete', pathname, paramsOrCallback, callback);
-    }
-  }, {
     key: 'request',
     value: function request(method, pathname) {
       var paramsOrCallback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};

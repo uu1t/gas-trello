@@ -17,22 +17,11 @@ export default class Http {
     this.key = key
     this.token = token
     this.origin = 'https://api.trello.com'
-  }
 
-  get (pathname, paramsOrCallback, callback) {
-    this.request('get', pathname, paramsOrCallback, callback)
-  }
-
-  post (pathname, paramsOrCallback, callback) {
-    this.request('post', pathname, paramsOrCallback, callback)
-  }
-
-  put (pathname, paramsOrCallback, callback) {
-    this.request('put', pathname, paramsOrCallback, callback)
-  }
-
-  del (pathname, paramsOrCallback, callback) {
-    this.request('delete', pathname, paramsOrCallback, callback)
+    this.get = this.request.bind(this, 'get')
+    this.post = this.request.bind(this, 'post')
+    this.put = this.request.bind(this, 'put')
+    this.del = this.request.bind(this, 'delete')
   }
 
   request (method, pathname, paramsOrCallback = {}, callback = () => undefined) {
