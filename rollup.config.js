@@ -2,6 +2,7 @@ import babel from 'rollup-plugin-babel'
 import builtins from 'rollup-plugin-node-builtins'
 import commonjs from 'rollup-plugin-commonjs'
 import gas from 'rollup-plugin-gas'
+import minify from 'rollup-plugin-babel-minify'
 import resolve from 'rollup-plugin-node-resolve'
 
 export default {
@@ -13,8 +14,9 @@ export default {
   plugins: [
     babel(),
     builtins(),
+    resolve(),
     commonjs(),
     gas(),
-    resolve()
+    minify({ comments: false })
   ]
 }
