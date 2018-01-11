@@ -32,13 +32,8 @@ export default class Http {
     }
   }
 
-  request (method, pathname, paramsOrCallback = {}, callback = () => undefined) {
-    let params = this.credentials
-    if (typeof paramsOrCallback === 'function') {
-      callback = paramsOrCallback
-    } else {
-      params = Object.assign(params, paramsOrCallback)
-    }
+  request (method, pathname, params = {}) {
+    params = Object.assign(params, this.credentials)
 
     // extract search params in pathname into params
     if (typeof pathname === 'string' && pathname.indexOf('?') !== -1) {
@@ -46,10 +41,10 @@ export default class Http {
       [pathname, search] = pathname.split('?')
       params = Object.assign(params, querystring.parse(search))
     }
-    this._request(method, pathname, params, callback)
+    this._request(method, pathname, params)
   }
 
-  _request (method, pathname, params, callback) {
+  _request (method, pathname, params) {
     let url = this.origin + pathname
     const options = {
       method,
@@ -68,10 +63,8 @@ export default class Http {
     const body = res.getContentText()
 
     if (statusCode >= 400) {
-      const err = requestError(statusCode, body, { url, method: method.toUpperCase() })
-      callback(err)
-    } else {
-      callback(null, JSON.parse(body))
+      throw requestError(statusCode, body, { url, method: method.toUpperCase() })
     }
+    return JSON.parse(body)
   }
 }
