@@ -32,6 +32,11 @@ describe('Http', () => {
       http.request('get', '/path/to/it?k1=v1&k2=v2', params)
       expect(http._request).toHaveBeenCalledWith('get', '/path/to/it', expect.objectContaining(mergedParams))
     })
+
+    it('returns return value of ._request()', () => {
+      http._request.mockReturnValue({ k: 'v' })
+      expect(http.request('get', '/path/to/it')).toEqual({ k: 'v' })
+    })
   })
 
   describe('._request()', () => {

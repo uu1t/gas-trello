@@ -41,7 +41,7 @@ export default class Http {
       [pathname, search] = pathname.split('?')
       params = Object.assign(params, querystring.parse(search))
     }
-    this._request(method, pathname, params)
+    return this._request(method, pathname, params)
   }
 
   _request (method, pathname, params) {
