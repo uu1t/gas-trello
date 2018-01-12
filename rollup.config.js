@@ -1,14 +1,14 @@
 import babel from 'rollup-plugin-babel'
 import builtins from 'rollup-plugin-node-builtins'
 import commonjs from 'rollup-plugin-commonjs'
-import gas from 'rollup-plugin-gas'
-import minify from 'rollup-plugin-babel-minify'
+import prettier from 'rollup-plugin-prettier'
 import resolve from 'rollup-plugin-node-resolve'
 
-export default {
-  input: 'src/index.js',
+const config = name => ({
+  input: `src/${name}.js`,
   output: {
-    file: 'dist/index.gs',
+    name,
+    file: `dist/${name}.gs`,
     format: 'iife'
   },
   plugins: [
@@ -16,7 +16,12 @@ export default {
     builtins(),
     resolve(),
     commonjs(),
-    gas(),
-    minify({ comments: false })
+    prettier({
+      singleQuote: true
+    })
   ]
-}
+})
+
+export default [
+  config('Http')
+]

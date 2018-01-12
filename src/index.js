@@ -1,2 +1,2 @@
 import Http from './Http'
-global.Http = Http
+export { Http }
