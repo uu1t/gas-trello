@@ -1,40 +1,31 @@
 {
   "name": "gas-trello",
   "description": "Google Apps Script wrapper for Trello's HTTP API",
-  "version": "0.0.1",
-  "author": "Yuichi Tanikawa <kojole.jp@gmail.com>",
-  "dependencies": {
-    "es6-object-assign": "^1.1.0",
-    "rollup-plugin-node-builtins": "^2.1.2"
+  "version": "0.1.0",
+  "author": "Yuichi Tanikawa <kojole.jp@gmail.com> (https://kojole.jp)",
+  "bugs": {
+    "url": "https://github.com/kojole/gas-trello/issues"
   },
+  "dependencies": {},
   "devDependencies": {
     "@types/google-apps-script": "0.0.18",
-    "@types/jest": "^22.0.1",
-    "babel-core": "^6.26.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.6.1",
-    "jest": "^22.0.4",
-    "rollup": "^0.53.3",
-    "rollup-plugin-babel": "^3.0.3",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-prettier": "^0.4.0",
-    "standard": "^10.0.3"
+    "@types/jest": "^22.2.3",
+    "jest": "^22.4.4"
   },
-  "keywords": [],
+  "homepage": "https://github.com/kojole/gas-trello",
+  "jest": {
+    "setupFiles": [
+      "<rootDir>/src/setupTests.js"
+    ]
+  },
+  "keywords": [
+    "google-apps-script",
+    "trello"
+  ],
   "license": "MIT",
   "main": "src/index.js",
+  "repository": "github:kojole/gas-trello",
   "scripts": {
-    "build": "rollup -c",
-    "lint": "standard",
-    "lint:fix": "standard --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "watch": "rollup -c -w"
-  },
-  "standard": {
-    "globals": [
-      "UrlFetchApp"
-    ]
+    "test": "jest"
   }
 }
