@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/kojole/gas-trello",
   "jest": {
+    "testEnvironment": "node",
     "setupFiles": [
       "<rootDir>/src/setupTests.js"
     ]
