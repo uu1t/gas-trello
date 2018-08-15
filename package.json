@@ -1,6 +1,6 @@
 {
-  "name": "gas-trello",
-  "description": "Google Apps Script wrapper for Trello's HTTP API",
+  "name": "@kojole/gas-trello",
+  "description": "Google Apps Script library for Trello’s HTTP API (declaration file only)",
   "version": "0.1.0",
   "author": "Yuichi Tanikawa <kojole.jp@gmail.com> (https://kojole.jp)",
   "bugs": {
@@ -25,7 +25,7 @@
     "trello"
   ],
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "",
   "repository": "github:kojole/gas-trello",
   "scripts": {
     "test": "jest"

@@ -99,6 +99,24 @@ Convenience methods for each HTTP method: `GET`, `POST`, `PUT`, `DELETE`.
 
 `path` and `params` parameters and return value are same as ones of `rest()` method.
 
+## Declaration file
+
+The declaration file is published as [`@kojole/gas-trello`](https://www.npmjs.com/package/@kojole/gas-trello) npm package.
+
+### Installation
+
+```console
+npm install @kojole/gas-trello --save-dev
+```
+
+### Usage
+
+Add the following to JavaScript or TypeScript file, and `Trello` namespace is exposed to global scope.
+
+```js
+/// <reference types="@kojole/gas-trello" />
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
