@@ -20,7 +20,7 @@ Installation can be done by managing libraries on Script Editor or editing `apps
 2. Paste script ID `1ZXi1qEkqy1qibKPs03qU8yJaQQqEnTC5xlWANX1Ywmeqn4fNoUOW-Zf5` to the **Add a library** text box and click **Add**.
 3. Select the latest version of `Trello` library on the **Version** dropdown.
 
-See details in https://developers.google.com/apps-script/guides/libraries#managing_libraries
+See details in https://developers.google.com/apps-script/guides/libraries#managing_libraries.
 
 ### Editing `appsscript.json`
 
