@@ -105,7 +105,7 @@ The declaration file is published as [`@kojole/gas-trello`](https://www.npmjs.co
 
 ### Installation
 
-```console
+```
 npm install @kojole/gas-trello --save-dev
 ```
 
